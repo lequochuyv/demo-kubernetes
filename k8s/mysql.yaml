@@ -1,0 +1,23 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mysql-db
+  namespace: app-kubernetes-namespace
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: mysql-db
+  template:
+    metadata:
+      labels:
+        app: mysql-db
+    spec:
+      containers:
+        - name: mysql-db
+          image: mysql-db-local
+          ports:
+            - containerPort: 3306
+          envFrom:
+            - secretRef:
+                name: mysql-db-secret

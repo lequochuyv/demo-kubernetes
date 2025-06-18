@@ -1,0 +1,30 @@
+apiVersion: skaffold/v4beta13
+kind: Config
+metadata:
+  name: my-app-kubernetes
+build:
+  local:
+    push: false
+  artifacts:
+    - image: mysql-db-local
+      context: mysql
+      docker:
+        dockerfile: Dockerfile
+    - image: backend-nextjs
+      context: back-end
+      docker:
+        dockerfile: Dockerfile
+    - image: frontend-nextjs
+      context: front-end
+      docker:
+        dockerfile: Dockerfile
+manifests:
+  rawYaml:
+    - k8s/namespace.yaml
+    - k8s/mysql-secret.yaml
+    - k8s/mysql.yaml
+    - k8s/mysql-service.yaml
+    - k8s/backend.yaml
+    - k8s/backend-service.yaml
+    - k8s/frontend.yaml
+    - k8s/frontend-service.yaml

@@ -1,0 +1,23 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: frontend-nextjs
+  namespace: app-kubernetes-namespace
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: frontend-nextjs
+  template:
+    metadata:
+      labels:
+        app: frontend-nextjs
+    spec:
+      containers:
+        - name: frontend-local
+          image: frontend-nextjs
+          ports:
+            - containerPort: 3000
+          envFrom:
+            - configMapRef:
+                name: port-config

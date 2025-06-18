@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: frontend-service
+  namespace: app-kubernetes-namespace
+spec:
+  selector:
+    app: frontend-nextjs
+  type: NodePort
+  ports:
+    - port: 3000 # Frontend service port
+      targetPort: 3000 # Frontend container port
+      nodePort: 31000 # NodePort for external access

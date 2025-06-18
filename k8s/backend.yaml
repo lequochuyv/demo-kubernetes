@@ -1,0 +1,41 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: backend-express
+  namespace: app-kubernetes-namespace
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: backend-express
+  template:
+    metadata:
+      labels:
+        app: backend-express
+    spec:
+      containers:
+        - name: backend-local
+          image: backend-nextjs
+          ports:
+            - containerPort: 5000
+          envFrom:
+            - secretRef:
+                name: mysql-db-secret
+            - configMapRef:
+                name: port-config
+          readinessProbe:
+            httpGet:
+              path: /health-check
+              port: 5000
+            initialDelaySeconds: 5
+            periodSeconds: 5
+            failureThreshold: 3
+            successThreshold: 1
+          livenessProbe:
+            httpGet:
+              path: /health-check
+              port: 5000
+            initialDelaySeconds: 5
+            periodSeconds: 5
+            failureThreshold: 3
+            successThreshold: 1
